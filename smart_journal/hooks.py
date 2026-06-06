@@ -5,7 +5,7 @@ app_description = "AI-powered invoice to Journal Entry with OCR"
 app_email = "utkrishiagriflow@gmail.com"
 app_license = "mit"
 
-fixtures = ["AI Settings"]
+fixtures = ["AI Settings", "Account Routing Rule"]
 
 # Apps
 # ------------------
