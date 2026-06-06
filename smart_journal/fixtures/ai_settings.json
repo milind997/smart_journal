@@ -1,0 +1,451 @@
+[
+ {
+  "api_key": "************************************************************************************************************",
+  "base_url": null,
+  "company_defaults": [
+   {
+    "company": "Raissyon Trading and Contracting Co",
+    "cost_center": "Main - RTC",
+    "credit_account": "1001272 - مصرف الإنماء - Al Enmaa Bank - RTC",
+    "parent": "AI Settings",
+    "parentfield": "company_defaults",
+    "parenttype": "AI Settings",
+    "vat_account": "1001214 - حساب ضريبة القيمة المضافة على المشتريات - VAT Input 15% - RTC"
+   },
+   {
+    "company": "Safia Measurements for Trading Co",
+    "cost_center": "Main - SMT",
+    "credit_account": "مصرف الإنماء - Al Enmaa Bank 6820160002500 - SMT",
+    "parent": "AI Settings",
+    "parentfield": "company_defaults",
+    "parenttype": "AI Settings",
+    "vat_account": "VAT input 15%- ضريبة القيمة المضافة - SMT"
+   },
+   {
+    "company": "Arabian Industrial Calibration Company",
+    "cost_center": "Main - ACC",
+    "credit_account": "1001341 - شركة رئيسيون للتجارة والمقاولات - Raissyon Trading & Contracting Co - ACC",
+    "parent": "AI Settings",
+    "parentfield": "company_defaults",
+    "parenttype": "AI Settings",
+    "vat_account": "1001332 - ضريبة القيمة المضافة - VAT Input 15% - ACC"
+   }
+  ],
+  "docstatus": 0,
+  "doctype": "AI Settings",
+  "enabled": 1,
+  "expense_routing": [
+   {
+    "account": "1005205 - G&A visits - Transportation - سفر و زيارات عمل - مواصلات - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Fuel",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005123 - مصروف وجبات - Project expenses - Meal allowance - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Food/Meal",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005209 - G&A - Hospitality - ضيافة - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Hospitality",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005214 - G&A - electricity bill - فاتورة كهرباء - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Electricity",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005214 - G&A - electricity bill - فاتورة كهرباء - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Water",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005216 - G&A - fees and subscriptions - رسوم واشتراكات - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Phone/Internet",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005226 - مصاريف ادارية و عمومية - مصروفات السيارات-G & A - Car Expenses - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Car Maintenance",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005216 - G&A - fees and subscriptions - رسوم واشتراكات - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Government Fee",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005204 - G&A Visits - Tickets - سفر و زيارات عمل - تذاكر - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Airline Ticket",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005124 - اقامه فندق - Project expenses - Hotel stay - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Hotel",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005121 - Projects - expenses Shipping - مصاريف المشاريع - شحن - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Shipping",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005249 - G & A - Overtime - مصاريف ادارية و عمومية - العمل الاضافي - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Salary/Overtime",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005213 - G&A - customs duties - رسوم جمركية - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Customs",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005210 - G&A - Office Supplies - مستلزمات مكتبية - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Office Supplies",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "1005224 - مصاريف ادارية و عمومية - اخرى-G & A - Others - RTC",
+    "company": "Raissyon Trading and Contracting Co",
+    "expense_type": "Other",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "سفر و زيارات عمل - مواصلات-Sales and Marketing Visits- Transportation - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Fuel",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "سفر و زيارات عمل - انتداب-Sales and Marketing Visits - Mandate - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Food/Meal",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصاريف ادارية و عمومية - اخرى - ضيافة - G & A -Hospitality - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Hospitality",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "G & A - Office Electricity  - مصاريف ادارية و عمومية - كهرباء المكتب - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Electricity",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "G & A - Office Electricity  - مصاريف ادارية و عمومية - كهرباء المكتب - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Water",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "G & A - Communications - مصاريف ادارية و عمومية - الاتصالات - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Phone/Internet",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "G & A - Car Maintenance and repair - مصاريف ادارية و عمومية - صيانة و اصلاح - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Car Maintenance",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصاريف ادارية و عمومية - اخرى - رسوم واشتراكات - G & A - Fees and Subscriptions - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Government Fee",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "سفر و زيارات عمل - تذاكر-Sales and Marketing Visits - Tickets - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Airline Ticket",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "سفر و زيارات عمل - سكن - Sales and Marketing - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Hotel",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "G & A - Mail, Shipping & Freight Forward-البريد، الشحن و الشحن - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Shipping",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "سفر و زيارات عمل - انتداب-Sales and Marketing Visits - Mandate - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Salary/Overtime",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "رسوم جمركية - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Customs",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصاريف ادارية و عمومية - اخرى - رسوم واشتراكات - G & A - Fees and Subscriptions - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Office Supplies",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصاريف ادارية و عمومية - اخرى - رسوم واشتراكات - G & A - Fees and Subscriptions - SMT",
+    "company": "Safia Measurements for Trading Co",
+    "expense_type": "Other",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "100533 - مصاريف سفر - Travelling Expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Fuel",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصروفات متنوعة - Miscellaneous expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Food/Meal",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصروفات متنوعة - Miscellaneous expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Hospitality",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "كهرباء ومياه - Electricity and Water - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Electricity",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "كهرباء ومياه - Electricity and Water - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Water",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "هاتف وبريد - Phone and Mail - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Phone/Internet",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصروفات صيانة عامة - General maintenance expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Car Maintenance",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "الرسوم الحكومية - Government Fees - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Government Fee",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "100533 - مصاريف سفر - Travelling Expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Airline Ticket",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "100534 - مصاريف فنادق وحجوزات - Hotel & Boarding Expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Hotel",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "رسوم شحن وتخليص - Shipping and Clearance Fees - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Shipping",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصروفات متنوعة - Miscellaneous expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Salary/Overtime",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "رسوم شحن وتخليص - Shipping and Clearance Fees - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Customs",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصروفات متنوعة - Miscellaneous expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Office Supplies",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   },
+   {
+    "account": "مصروفات متنوعة - Miscellaneous expenses - ACC",
+    "company": "Arabian Industrial Calibration Company",
+    "expense_type": "Other",
+    "keyword": null,
+    "parent": "AI Settings",
+    "parentfield": "expense_routing",
+    "parenttype": "AI Settings"
+   }
+  ],
+  "max_tokens": 2000,
+  "model": "claude-sonnet-4-6",
+  "modified": "2026-06-04 20:38:55.624095",
+  "name": "AI Settings",
+  "provider": "Anthropic",
+  "timeout": 120
+ }
+]
