@@ -1,0 +1,310 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "SJ-INV-.#####",
+ "creation": "2026-06-03 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "upload_section",
+  "company",
+  "invoice_file",
+  "column_break_upload",
+  "status",
+  "journal_entry",
+  "extracted_section",
+  "supplier_name",
+  "supplier_vat",
+  "customer_vat",
+  "invoice_no",
+  "invoice_date",
+  "direction",
+  "column_break_extracted",
+  "net_amount",
+  "vat_amount",
+  "total_amount",
+  "extraction_confidence",
+  "qr_section",
+  "raw_qr",
+  "items_section",
+  "items",
+  "posting_section",
+  "posting_date",
+  "expense_account",
+  "vat_account",
+  "pay_mode",
+  "bank_account",
+  "supplier",
+  "supplier_creditor_account",
+  "column_break_posting",
+  "cost_center",
+  "project",
+  "user_remark"
+ ],
+ "fields": [
+  {
+   "fieldname": "upload_section",
+   "fieldtype": "Section Break",
+   "label": "Invoice Upload"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1,
+   "default": "Raissyon Trading and Contracting Co",
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "invoice_file",
+   "fieldtype": "Attach",
+   "label": "Invoice File (PDF / Image)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_upload",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nExtracted\nReviewed\nJE Created",
+   "default": "Draft",
+   "read_only": 1,
+   "in_standard_filter": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Link",
+   "label": "Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "extracted_section",
+   "fieldtype": "Section Break",
+   "label": "Extracted from Invoice",
+   "description": "Filled automatically when you click Extract. Review and correct before creating the Journal Entry."
+  },
+  {
+   "fieldname": "supplier_name",
+   "fieldtype": "Data",
+   "label": "Supplier Name",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "supplier_vat",
+   "fieldtype": "Data",
+   "label": "Supplier VAT No"
+  },
+  {
+   "fieldname": "customer_vat",
+   "fieldtype": "Data",
+   "label": "Customer VAT No"
+  },
+  {
+   "fieldname": "invoice_no",
+   "fieldtype": "Data",
+   "label": "Invoice No",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "invoice_date",
+   "fieldtype": "Date",
+   "label": "Invoice Date (as printed)"
+  },
+  {
+   "fieldname": "direction",
+   "fieldtype": "Select",
+   "label": "Detected Direction",
+   "options": "\nBuyer (Purchase)\nSeller (Sale)",
+   "read_only": 1,
+   "description": "Buyer = you are the customer = expense (debit). Seller = you sold = not supported by this tool."
+  },
+  {
+   "fieldname": "column_break_extracted",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "net_amount",
+   "fieldtype": "Currency",
+   "label": "Net Amount (before VAT)"
+  },
+  {
+   "fieldname": "vat_amount",
+   "fieldtype": "Currency",
+   "label": "VAT Amount (15%)"
+  },
+  {
+   "fieldname": "total_amount",
+   "fieldtype": "Currency",
+   "label": "Total Amount (incl. VAT)",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "extraction_confidence",
+   "fieldtype": "Data",
+   "label": "Extraction Confidence",
+   "read_only": 1
+  },
+  {
+   "fieldname": "qr_section",
+   "fieldtype": "Section Break",
+   "label": "ZATCA QR (raw)",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "raw_qr",
+   "fieldtype": "Small Text",
+   "label": "Decoded QR Content",
+   "read_only": 1
+  },
+  {
+   "fieldname": "items_section",
+   "fieldtype": "Section Break",
+   "label": "Line Items (reference only)",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "items",
+   "fieldtype": "Table",
+   "label": "Items",
+   "options": "Invoice to Journal Entry Item"
+  },
+  {
+   "fieldname": "posting_section",
+   "fieldtype": "Section Break",
+   "label": "Posting Details (you choose)"
+  },
+  {
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1,
+   "description": "Set manually — use the Gregorian invoice date."
+  },
+  {
+   "fieldname": "expense_account",
+   "fieldtype": "Link",
+   "label": "Expense Account (Debit)",
+   "options": "Account",
+   "reqd": 1,
+   "default": "1005107 - Project expenses - Materials - مواد للمشاريع ومواد مستهلكة مباشره - RTC"
+  },
+  {
+   "fieldname": "vat_account",
+   "fieldtype": "Link",
+   "label": "VAT Input Account (Debit)",
+   "options": "Account",
+   "reqd": 1,
+   "default": "1001214 - حساب ضريبة القيمة المضافة على المشتريات - VAT Input 15% - RTC"
+  },
+  {
+   "fieldname": "pay_mode",
+   "fieldtype": "Select",
+   "label": "Pay Mode",
+   "options": "Bank\nOn Credit",
+   "default": "Bank",
+   "reqd": 1,
+   "description": "Bank = paid now (نقدي). On Credit = owed to supplier (آجل)."
+  },
+  {
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "label": "Paid From (Bank/Cash - Credit)",
+   "options": "Account",
+   "depends_on": "eval:doc.pay_mode=='Bank'",
+   "mandatory_depends_on": "eval:doc.pay_mode=='Bank'"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier",
+   "depends_on": "eval:doc.pay_mode=='On Credit'",
+   "mandatory_depends_on": "eval:doc.pay_mode=='On Credit'"
+  },
+  {
+   "fieldname": "supplier_creditor_account",
+   "fieldtype": "Link",
+   "label": "Supplier Payable Account (Credit)",
+   "options": "Account",
+   "default": "1002151 - موردين محليين - Supplier Creditor - RTC",
+   "depends_on": "eval:doc.pay_mode=='On Credit'",
+   "mandatory_depends_on": "eval:doc.pay_mode=='On Credit'"
+  },
+  {
+   "fieldname": "column_break_posting",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "reqd": 1,
+   "default": "Main - RTC"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project (optional)",
+   "options": "Project"
+  },
+  {
+   "fieldname": "user_remark",
+   "fieldtype": "Small Text",
+   "label": "Remark / البيان"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-06-03 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Smart Journal",
+ "name": "Invoice to Journal Entry",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

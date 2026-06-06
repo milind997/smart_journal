@@ -1,0 +1,62 @@
+{
+ "actions": [],
+ "creation": "2026-06-04 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "credit_account",
+  "vat_account",
+  "cost_center"
+ ],
+ "fields": [
+  {
+   "columns": 3,
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "columns": 3,
+   "fieldname": "credit_account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Credit Account (Bank / Inter-company)",
+   "options": "Account",
+   "reqd": 1,
+   "description": "Account to CREDIT in the Journal Entry (bank, cash, or inter-company payable)."
+  },
+  {
+   "columns": 3,
+   "fieldname": "vat_account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "VAT Input Account",
+   "options": "Account",
+   "description": "VAT Input 15% account for this company."
+  },
+  {
+   "columns": 3,
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Default Cost Center",
+   "options": "Cost Center"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-06-04 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Smart Journal",
+ "name": "Company Default Account",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

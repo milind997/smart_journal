@@ -1,0 +1,166 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "creation": "2026-06-03 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "provider_section",
+  "enabled",
+  "provider",
+  "column_break_prov",
+  "model",
+  "credentials_section",
+  "api_key",
+  "base_url",
+  "advanced_section",
+  "max_tokens",
+  "column_break_adv",
+  "timeout",
+  "test_section",
+  "test_connection_html",
+  "company_defaults_section",
+  "company_defaults",
+  "routing_section",
+  "expense_routing"
+ ],
+ "fields": [
+  {
+   "fieldname": "provider_section",
+   "fieldtype": "Section Break",
+   "label": "AI Provider"
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "provider",
+   "fieldtype": "Select",
+   "label": "Provider",
+   "options": "OpenAI\nAnthropic",
+   "reqd": 1,
+   "default": "Anthropic"
+  },
+  {
+   "fieldname": "column_break_prov",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "model",
+   "fieldtype": "Data",
+   "label": "Model",
+   "description": "Vision-capable model. Anthropic e.g. claude-opus-4-8 / claude-sonnet-4-6. OpenAI e.g. gpt-4o.",
+   "default": "claude-sonnet-4-6"
+  },
+  {
+   "fieldname": "credentials_section",
+   "fieldtype": "Section Break",
+   "label": "API Credentials"
+  },
+  {
+   "fieldname": "api_key",
+   "fieldtype": "Password",
+   "label": "API Key",
+   "reqd": 1
+  },
+  {
+   "fieldname": "base_url",
+   "fieldtype": "Data",
+   "label": "Base URL (optional)",
+   "description": "Override the API endpoint for a proxy or self-hosted gateway. Leave blank to use the provider default."
+  },
+  {
+   "fieldname": "advanced_section",
+   "fieldtype": "Section Break",
+   "label": "Advanced",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "max_tokens",
+   "fieldtype": "Int",
+   "label": "Max Output Tokens",
+   "default": "2000"
+  },
+  {
+   "fieldname": "column_break_adv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "timeout",
+   "fieldtype": "Int",
+   "label": "Request Timeout (seconds)",
+   "default": "120"
+  },
+  {
+   "fieldname": "test_section",
+   "fieldtype": "Section Break",
+   "label": "Connection Test"
+  },
+  {
+   "fieldname": "test_connection_html",
+   "fieldtype": "HTML",
+   "label": "Test Connection",
+   "options": "<button class=\"btn btn-sm btn-default\" id=\"sj-test-connection\">Test Connection</button><div id=\"sj-test-result\" style=\"margin-top:8px;\"></div>"
+  },
+  {
+   "fieldname": "company_defaults_section",
+   "fieldtype": "Section Break",
+   "label": "Company Default Accounts",
+   "description": "Credit account (bank or inter-company), VAT account, and cost center per company. Used when creating Journal Entries from Purchase Requests."
+  },
+  {
+   "fieldname": "company_defaults",
+   "fieldtype": "Table",
+   "label": "Company Defaults",
+   "options": "Company Default Account"
+  },
+  {
+   "fieldname": "routing_section",
+   "fieldtype": "Section Break",
+   "label": "Expense Account Routing",
+   "description": "Map expense type + company to the correct debit account. AI classifies each receipt into an expense type, then this table picks the right GL account."
+  },
+  {
+   "fieldname": "expense_routing",
+   "fieldtype": "Table",
+   "label": "Routing Rules",
+   "options": "Account Routing Rule"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-06-03 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Smart Journal",
+ "name": "AI Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 0,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

@@ -1,0 +1,153 @@
+{
+ "actions": [],
+ "creation": "2026-06-04 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "source_document",
+  "attachment",
+  "attachment_preview",
+  "source_type",
+  "description",
+  "suggested_account",
+  "accountant_account",
+  "final_account",
+  "account_company",
+  "debit",
+  "credit",
+  "tax_rate",
+  "vat_amount",
+  "is_bank_charge",
+  "include_in_pr_amount",
+  "confidence",
+  "ai_reason",
+  "accountant_approved"
+ ],
+ "fields": [
+  {
+   "fieldname": "source_document",
+   "fieldtype": "Data",
+   "label": "Source Document"
+  },
+  {
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "label": "Invoice / Receipt",
+   "read_only": 1,
+   "description": "Source document attached to the Purchase Request"
+  },
+  {
+   "fieldname": "attachment_preview",
+   "fieldtype": "HTML",
+   "label": "Preview"
+  },
+  {
+   "columns": 1,
+   "fieldname": "source_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Source Type",
+   "options": "Invoice\nBank Slip\nTax\nBank Charge\nBank Payment\nOther"
+  },
+  {
+   "columns": 2,
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Description"
+  },
+  {
+   "fieldname": "suggested_account",
+   "fieldtype": "Link",
+   "label": "Suggested Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "accountant_account",
+   "fieldtype": "Link",
+   "label": "Accountant Account",
+   "options": "Account",
+   "description": "Accountant can override AI suggested account"
+  },
+  {
+   "columns": 2,
+   "fieldname": "final_account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Final Account",
+   "options": "Account",
+   "description": "Account finally used for accounting entry"
+  },
+  {
+   "fieldname": "account_company",
+   "fieldtype": "Link",
+   "label": "Account Company",
+   "options": "Company",
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "debit",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Debit"
+  },
+  {
+   "columns": 1,
+   "fieldname": "credit",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Credit"
+  },
+  {
+   "fieldname": "tax_rate",
+   "fieldtype": "Percent",
+   "label": "Tax Rate"
+  },
+  {
+   "fieldname": "vat_amount",
+   "fieldtype": "Currency",
+   "label": "VAT Amount"
+  },
+  {
+   "fieldname": "is_bank_charge",
+   "fieldtype": "Check",
+   "label": "Is Bank Charge"
+  },
+  {
+   "default": "1",
+   "fieldname": "include_in_pr_amount",
+   "fieldtype": "Check",
+   "label": "Include in PR Amount",
+   "description": "Untick for bank charges and VAT on bank charges"
+  },
+  {
+   "fieldname": "confidence",
+   "fieldtype": "Percent",
+   "label": "Confidence"
+  },
+  {
+   "fieldname": "ai_reason",
+   "fieldtype": "Small Text",
+   "label": "AI Reason"
+  },
+  {
+   "fieldname": "accountant_approved",
+   "fieldtype": "Check",
+   "label": "Accountant Approved"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-06-04 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Smart Journal",
+ "name": "AI Accounting Review Account",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

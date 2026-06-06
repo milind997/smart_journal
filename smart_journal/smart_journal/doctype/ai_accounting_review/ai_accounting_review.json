@@ -1,0 +1,361 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "format:AIR-{YYYY}-{####}",
+ "creation": "2026-06-04 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "purchase_request_section",
+  "purchase_request",
+  "company",
+  "column_break_pr",
+  "posting_date",
+  "currency",
+  "requested_amount",
+  "recommended_purchase_amount",
+  "amount_summary_section",
+  "total_invoice_amount",
+  "bank_paid_amount",
+  "bank_charges_amount",
+  "vat_on_bank_charges",
+  "column_break_amounts",
+  "total_suggested_debit",
+  "total_suggested_credit",
+  "difference_amount",
+  "extracted_documents_section",
+  "extracted_documents",
+  "accounting_rows_section",
+  "accounting_rows",
+  "posting_details_section",
+  "bank_account",
+  "cost_center",
+  "column_break_posting",
+  "project",
+  "user_remark",
+  "ai_review_status_section",
+  "status",
+  "validation_status",
+  "ai_confidence",
+  "remarks_section",
+  "ai_remarks",
+  "accountant_remarks",
+  "validation_log",
+  "created_documents_section",
+  "reviewed_by",
+  "reviewed_on",
+  "column_break_created",
+  "journal_entry",
+  "purchase_invoice"
+ ],
+ "fields": [
+  {
+   "fieldname": "purchase_request_section",
+   "fieldtype": "Section Break",
+   "label": "Purchase Request Details"
+  },
+  {
+   "fieldname": "purchase_request",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Purchase Request",
+   "options": "Purchase Request",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_pr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "default": "SAR",
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "requested_amount",
+   "fieldtype": "Currency",
+   "label": "Requested Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "recommended_purchase_amount",
+   "fieldtype": "Currency",
+   "label": "Recommended Purchase Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amount_summary_section",
+   "fieldtype": "Section Break",
+   "label": "Amount Summary"
+  },
+  {
+   "description": "Total invoice amount excluding bank charges",
+   "fieldname": "total_invoice_amount",
+   "fieldtype": "Currency",
+   "label": "Total Invoice Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "description": "Actual amount paid from bank slip",
+   "fieldname": "bank_paid_amount",
+   "fieldtype": "Currency",
+   "label": "Bank Paid Amount",
+   "options": "currency"
+  },
+  {
+   "fieldname": "bank_charges_amount",
+   "fieldtype": "Currency",
+   "label": "Bank Charges Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "vat_on_bank_charges",
+   "fieldtype": "Currency",
+   "label": "VAT on Bank Charges",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_amounts",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_suggested_debit",
+   "fieldtype": "Currency",
+   "label": "Total Suggested Debit",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "total_suggested_credit",
+   "fieldtype": "Currency",
+   "label": "Total Suggested Credit",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "difference_amount",
+   "fieldtype": "Currency",
+   "label": "Difference Amount",
+   "options": "currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "extracted_documents_section",
+   "fieldtype": "Section Break",
+   "label": "Extracted Documents"
+  },
+  {
+   "fieldname": "extracted_documents",
+   "fieldtype": "Table",
+   "label": "Extracted Documents",
+   "options": "AI Extracted Document"
+  },
+  {
+   "fieldname": "accounting_rows_section",
+   "fieldtype": "Section Break",
+   "label": "Accounting Rows"
+  },
+  {
+   "fieldname": "accounting_rows",
+   "fieldtype": "Table",
+   "label": "Accounting Rows",
+   "options": "AI Accounting Review Account"
+  },
+  {
+   "fieldname": "posting_details_section",
+   "fieldtype": "Section Break",
+   "label": "Posting Details"
+  },
+  {
+   "description": "Bank or Cash account to CREDIT (paid from)",
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "label": "Paid From (Bank / Cash)",
+   "options": "Account",
+   "reqd": 0
+  },
+  {
+   "fieldname": "cost_center",
+   "fieldtype": "Link",
+   "label": "Cost Center",
+   "options": "Cost Center",
+   "reqd": 0
+  },
+  {
+   "fieldname": "column_break_posting",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "project",
+   "fieldtype": "Link",
+   "label": "Project (optional)",
+   "options": "Project"
+  },
+  {
+   "fieldname": "user_remark",
+   "fieldtype": "Small Text",
+   "label": "Journal Entry Remark / البيان"
+  },
+  {
+   "fieldname": "ai_review_status_section",
+   "fieldtype": "Section Break",
+   "label": "AI Review Status"
+  },
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Draft\nAI Suggested\nUnder Review\nApproved\nRejected\nJournal Entry Created\nPurchase Invoice Created\nCancelled"
+  },
+  {
+   "default": "Not Validated",
+   "fieldname": "validation_status",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Validation Status",
+   "options": "Not Validated\nPassed\nWarning\nFailed"
+  },
+  {
+   "fieldname": "ai_confidence",
+   "fieldtype": "Percent",
+   "label": "AI Confidence",
+   "read_only": 1
+  },
+  {
+   "fieldname": "remarks_section",
+   "fieldtype": "Section Break",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "ai_remarks",
+   "fieldtype": "Text Editor",
+   "label": "AI Remarks",
+   "read_only": 1
+  },
+  {
+   "fieldname": "accountant_remarks",
+   "fieldtype": "Small Text",
+   "label": "Accountant Remarks"
+  },
+  {
+   "fieldname": "validation_log",
+   "fieldtype": "Text Editor",
+   "label": "Validation Log",
+   "read_only": 1
+  },
+  {
+   "fieldname": "created_documents_section",
+   "fieldtype": "Section Break",
+   "label": "Created Documents"
+  },
+  {
+   "fieldname": "reviewed_by",
+   "fieldtype": "Link",
+   "label": "Reviewed By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reviewed_on",
+   "fieldtype": "Datetime",
+   "label": "Reviewed On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_created",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "journal_entry",
+   "fieldtype": "Link",
+   "label": "Journal Entry",
+   "options": "Journal Entry",
+   "read_only": 1
+  },
+  {
+   "fieldname": "purchase_invoice",
+   "fieldtype": "Link",
+   "label": "Purchase Invoice",
+   "options": "Purchase Invoice",
+   "read_only": 1
+  }
+ ],
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2026-06-04 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Smart Journal",
+ "name": "AI Accounting Review",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

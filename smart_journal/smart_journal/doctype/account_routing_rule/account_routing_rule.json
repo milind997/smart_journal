@@ -1,0 +1,60 @@
+{
+ "actions": [],
+ "creation": "2026-06-03 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company",
+  "expense_type",
+  "account",
+  "keyword"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "description": "Leave blank to apply to all companies (fallback)."
+  },
+  {
+   "columns": 3,
+   "fieldname": "expense_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Expense Type",
+   "options": "\nFuel\nFood/Meal\nHospitality\nElectricity\nWater\nPhone/Internet\nCar Maintenance\nGovernment Fee\nAirline Ticket\nHotel\nShipping\nSalary/Overtime\nCustoms\nOffice Supplies\nOther",
+   "description": "AI classifies each receipt into one of these types."
+  },
+  {
+   "columns": 5,
+   "fieldname": "account",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Expense Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "keyword",
+   "fieldtype": "Data",
+   "label": "Keyword (optional fallback)",
+   "description": "If set, also matches when this word appears in the receipt description. Arabic or English."
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-06-04 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Smart Journal",
+ "name": "Account Routing Rule",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
