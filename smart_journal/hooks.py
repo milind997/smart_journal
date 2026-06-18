@@ -5,7 +5,18 @@ app_description = "AI-powered invoice to Journal Entry with OCR"
 app_email = "utkrishiagriflow@gmail.com"
 app_license = "mit"
 
-fixtures = ["AI Settings", "Account Routing Rule"]
+fixtures = ["Expense Type", "AI Settings", "Account Routing Rule"]
+
+# Installation / migration
+# ------------------------
+after_install = [
+	"smart_journal.custom_fields.create",
+	"smart_journal.connections.create",
+]
+after_migrate = [
+	"smart_journal.custom_fields.create",
+	"smart_journal.connections.create",
+]
 
 # Apps
 # ------------------
@@ -28,7 +39,7 @@ fixtures = ["AI Settings", "Account Routing Rule"]
 
 # include js, css files in header of desk.html
 # app_include_css = "/assets/smart_journal/css/smart_journal.css"
-# app_include_js = "/assets/smart_journal/js/smart_journal.js"
+app_include_js = "smart_journal.bundle.js"
 
 # include js, css files in header of web template
 # web_include_css = "/assets/smart_journal/css/smart_journal.css"
@@ -47,7 +58,8 @@ fixtures = ["AI Settings", "Account Routing Rule"]
 # include js in doctype views
 doctype_js = {
 	"Journal Entry": "public/js/journal_entry.js",
-	"Purchase Request": "public/js/purchase_request.js",
+	# "Purchase Request" is a CUSTOM doctype, so doctype_js is ignored for it.
+	# Its form script is loaded via app_include_js (smart_journal.bundle.js) instead.
 	"AI Accounting Review": "public/js/ai_accounting_review.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}

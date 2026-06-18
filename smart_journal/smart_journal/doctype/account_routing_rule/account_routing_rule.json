@@ -23,11 +23,11 @@
   {
    "columns": 3,
    "fieldname": "expense_type",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Expense Type",
-   "options": "\nFuel\nFood/Meal\nHospitality\nElectricity\nWater\nPhone/Internet\nCar Maintenance\nGovernment Fee\nAirline Ticket\nHotel\nShipping\nSalary/Overtime\nCustoms\nOffice Supplies\nOther",
-   "description": "AI classifies each receipt into one of these types."
+   "options": "Expense Type",
+   "description": "AI classifies each receipt into one of these types. Manage the list in Expense Type."
   },
   {
    "columns": 5,

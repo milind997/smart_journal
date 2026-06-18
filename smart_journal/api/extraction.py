@@ -207,7 +207,12 @@ def _read_file(file_url):
 
 
 def _file_to_images(content, filename):
-	"""Return a list of PNG byte-strings, one per page (or the image itself)."""
+	"""Return a list of image byte-strings, one per page (or the image itself).
+
+	PDF pages are rendered to PNG via PyMuPDF; other files are passed through
+	unchanged (so a JPEG stays a JPEG — see _img_media_type, which is why the
+	media type must be sniffed at send time rather than assumed to be PNG).
+	"""
 	images = []
 	if str(filename).lower().endswith(".pdf"):
 		import fitz  # PyMuPDF
@@ -219,6 +224,27 @@ def _file_to_images(content, filename):
 	else:
 		images.append(content)
 	return images
+
+
+def _img_media_type(data):
+	"""Best-effort image MIME type from the file's magic bytes.
+
+	Anthropic and OpenAI both reject an image whose declared media type does not
+	match its actual bytes (e.g. JPEG bytes sent as image/png → HTTP 400). We
+	therefore sniff the real type instead of hard-coding PNG. Defaults to
+	image/png (PDF pages are rendered to PNG, so that is the safe fallback).
+	"""
+	if not data:
+		return "image/png"
+	if data[:3] == b"\xff\xd8\xff":
+		return "image/jpeg"
+	if data[:8] == b"\x89PNG\r\n\x1a\n":
+		return "image/png"
+	if data[:6] in (b"GIF87a", b"GIF89a"):
+		return "image/gif"
+	if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+		return "image/webp"
+	return "image/png"
 
 
 # ----------------------------------------------------------------------------- #
@@ -312,7 +338,7 @@ def _call_llm(images, settings):
 		for img in pages:
 			content.append({
 				"type": "image",
-				"source": {"type": "base64", "media_type": "image/png",
+				"source": {"type": "base64", "media_type": _img_media_type(img),
 				           "data": base64.b64encode(img).decode()},
 			})
 		msg = client.messages.create(
@@ -329,7 +355,7 @@ def _call_llm(images, settings):
 		content = [{"type": "text", "text": _PROMPT}]
 		for img in pages:
 			b64 = base64.b64encode(img).decode()
-			content.append({"type": "image_url", "image_url": {"url": f"data:image/png;base64,{b64}"}})
+			content.append({"type": "image_url", "image_url": {"url": f"data:{_img_media_type(img)};base64,{b64}"}})
 		resp = openai_chat_create(
 			client,
 			model=model, max_tokens=max_tokens,

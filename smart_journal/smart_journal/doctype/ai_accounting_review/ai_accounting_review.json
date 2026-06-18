@@ -14,6 +14,11 @@
   "currency",
   "requested_amount",
   "recommended_purchase_amount",
+  "supplier_section",
+  "supplier",
+  "supplier_name",
+  "column_break_supplier",
+  "supplier_vat",
   "amount_summary_section",
   "total_invoice_amount",
   "bank_paid_amount",
@@ -102,6 +107,38 @@
    "read_only": 1
   },
   {
+   "description": "Supplier / vendor extracted from the invoice. Created automatically if it does not exist yet. The accountant can override the linked Supplier.",
+   "fieldname": "supplier_section",
+   "fieldtype": "Section Break",
+   "label": "Supplier"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Supplier",
+   "options": "Supplier",
+   "description": "Used as the Party on the Journal Entry. Auto-created from the extracted vendor name when missing."
+  },
+  {
+   "fieldname": "supplier_name",
+   "fieldtype": "Data",
+   "label": "Extracted Vendor Name",
+   "read_only": 1,
+   "description": "Raw vendor / seller name as read from the invoice"
+  },
+  {
+   "fieldname": "column_break_supplier",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "supplier_vat",
+   "fieldtype": "Data",
+   "label": "Supplier VAT",
+   "read_only": 1
+  },
+  {
+   "description": "Auto-calculated from the Accounting Rows. Only <b>Bank Paid Amount</b> is editable here — adjust it if the bank slip differs.",
    "fieldname": "amount_summary_section",
    "fieldtype": "Section Break",
    "label": "Amount Summary"
@@ -154,6 +191,8 @@
    "read_only": 1
   },
   {
+   "bold": 1,
+   "description": "Debit minus Credit. Must be <b>0.00</b> before the Journal Entry can be created.",
    "fieldname": "difference_amount",
    "fieldtype": "Currency",
    "label": "Difference Amount",
@@ -172,6 +211,7 @@
    "options": "AI Extracted Document"
   },
   {
+   "description": "Review each line against the invoice. Edit the <b>Final Account</b>, <b>Debit</b> and <b>Credit</b> directly in the table. Open a row (pencil icon) to see the invoice preview, AI reasoning and confidence. Low-confidence rows are worth a closer look.",
    "fieldname": "accounting_rows_section",
    "fieldtype": "Section Break",
    "label": "Accounting Rows"
@@ -183,6 +223,7 @@
    "options": "AI Accounting Review Account"
   },
   {
+   "description": "Choose where the money is paid from before creating the Journal Entry.",
    "fieldname": "posting_details_section",
    "fieldtype": "Section Break",
    "label": "Posting Details"
@@ -218,6 +259,7 @@
    "label": "Journal Entry Remark / البيان"
   },
   {
+   "collapsible": 1,
    "fieldname": "ai_review_status_section",
    "fieldtype": "Section Break",
    "label": "AI Review Status"
@@ -246,6 +288,7 @@
    "read_only": 1
   },
   {
+   "collapsible": 1,
    "fieldname": "remarks_section",
    "fieldtype": "Section Break",
    "label": "Remarks"
@@ -268,6 +311,7 @@
    "read_only": 1
   },
   {
+   "collapsible": 1,
    "fieldname": "created_documents_section",
    "fieldtype": "Section Break",
    "label": "Created Documents"

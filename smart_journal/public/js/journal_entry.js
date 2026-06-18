@@ -7,7 +7,7 @@
 
 frappe.ui.form.on("Journal Entry", {
 	refresh(frm) {
-		frm.add_custom_button(__("Extract from Invoice"), () => open_extract_dialog(frm));
+		// frm.add_custom_button(__("Extract from Invoice"), () => open_extract_dialog(frm));
 	},
 });
 

@@ -1,0 +1,20 @@
+[
+ {"doctype": "Expense Type", "name": "Fuel", "expense_type_name": "Fuel", "arabic_name": "وقود", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Food/Meal", "expense_type_name": "Food/Meal", "arabic_name": "طعام / وجبات", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Hospitality", "expense_type_name": "Hospitality", "arabic_name": "ضيافة", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Electricity", "expense_type_name": "Electricity", "arabic_name": "كهرباء", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Water", "expense_type_name": "Water", "arabic_name": "مياه", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Phone/Internet", "expense_type_name": "Phone/Internet", "arabic_name": "هاتف / إنترنت", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Car Maintenance", "expense_type_name": "Car Maintenance", "arabic_name": "صيانة سيارات", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Government Fee", "expense_type_name": "Government Fee", "arabic_name": "رسوم حكومية", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Social Insurance", "expense_type_name": "Social Insurance", "arabic_name": "التأمينات الاجتماعية", "disabled": 0, "description": "GOSI / التأمينات الاجتماعية"},
+ {"doctype": "Expense Type", "name": "Salary", "expense_type_name": "Salary", "arabic_name": "راتب أساسي", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Overtime", "expense_type_name": "Overtime", "arabic_name": "أجر إضافي", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Salary/Overtime", "expense_type_name": "Salary/Overtime", "arabic_name": "راتب وأجر إضافي", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Airline Ticket", "expense_type_name": "Airline Ticket", "arabic_name": "تذاكر طيران", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Hotel", "expense_type_name": "Hotel", "arabic_name": "فنادق", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Shipping", "expense_type_name": "Shipping", "arabic_name": "شحن", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Customs", "expense_type_name": "Customs", "arabic_name": "جمارك", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Office Supplies", "expense_type_name": "Office Supplies", "arabic_name": "لوازم مكتبية", "disabled": 0},
+ {"doctype": "Expense Type", "name": "Other", "expense_type_name": "Other", "arabic_name": "أخرى", "disabled": 0}
+]

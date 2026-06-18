@@ -14,6 +14,9 @@
   "accountant_account",
   "final_account",
   "account_company",
+  "against_account",
+  "party_type",
+  "party",
   "debit",
   "credit",
   "tax_rate",
@@ -43,10 +46,8 @@
    "label": "Preview"
   },
   {
-   "columns": 1,
    "fieldname": "source_type",
    "fieldtype": "Select",
-   "in_list_view": 1,
    "label": "Source Type",
    "options": "Invoice\nBank Slip\nTax\nBank Charge\nBank Payment\nOther"
   },
@@ -71,7 +72,8 @@
    "description": "Accountant can override AI suggested account"
   },
   {
-   "columns": 2,
+   "bold": 1,
+   "columns": 3,
    "fieldname": "final_account",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -87,14 +89,34 @@
    "read_only": 1
   },
   {
-   "columns": 1,
+   "fieldname": "against_account",
+   "fieldtype": "Link",
+   "label": "Against Account",
+   "options": "Account",
+   "description": "The opposite side of this line (e.g. the expense a bank credit pays for)"
+  },
+  {
+   "fieldname": "party_type",
+   "fieldtype": "Link",
+   "label": "Party Type",
+   "options": "DocType",
+   "description": "e.g. Supplier — set on the line that carries the vendor"
+  },
+  {
+   "fieldname": "party",
+   "fieldtype": "Dynamic Link",
+   "label": "Party",
+   "options": "party_type"
+  },
+  {
+   "columns": 2,
    "fieldname": "debit",
    "fieldtype": "Currency",
    "in_list_view": 1,
    "label": "Debit"
   },
   {
-   "columns": 1,
+   "columns": 2,
    "fieldname": "credit",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -123,9 +145,12 @@
    "description": "Untick for bank charges and VAT on bank charges"
   },
   {
+   "columns": 1,
    "fieldname": "confidence",
    "fieldtype": "Percent",
-   "label": "Confidence"
+   "in_list_view": 1,
+   "label": "Confidence",
+   "read_only": 1
   },
   {
    "fieldname": "ai_reason",

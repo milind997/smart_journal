@@ -1,0 +1,68 @@
+{
+ "actions": [],
+ "creation": "2026-06-06 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "attachment",
+  "document_type",
+  "note",
+  "lines_found",
+  "status"
+ ],
+ "fields": [
+  {
+   "columns": 4,
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "Invoice / Slip",
+   "reqd": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "document_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Document Type",
+   "options": "\nInvoice\nReceipt\nBank Slip\nOther",
+   "description": "Optional hint. Set 'Bank Slip' for payment proofs."
+  },
+  {
+   "columns": 3,
+   "fieldname": "note",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Note"
+  },
+  {
+   "columns": 1,
+   "fieldname": "lines_found",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Lines",
+   "read_only": 1
+  },
+  {
+   "columns": 1,
+   "fieldname": "status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Status",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-06-06 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Smart Journal",
+ "name": "Purchase Request Attachment",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

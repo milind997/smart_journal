@@ -7,30 +7,16 @@ frappe.ui.form.on("Purchase Request", {
 	refresh(frm) {
 		if (frm.is_new()) return;
 
-		// wf_status is the status field on this custom PR doctype.
-		const wf = (
-			frm.doc.wf_status ||
-			frm.doc.workflow_state ||
-			frm.doc.status ||
-			""
-		).toLowerCase();
-
-		// Hide button only on truly terminal / blocked states.
-		if (wf === "draft" || wf.includes("reject") || wf.includes("cancel")) return;
-
-		// Always render the button immediately — no async pre-check.
-		// The server returns already_exists=true if a review already exists.
-		frm
-			.add_custom_button(__("🤖 Create AI Review"), () => _on_click(frm))
-			.addClass("btn-primary");
+		// Send the Purchase Request to accounting for an AI Review.
+		frm.add_custom_button(__("🤖 Create AI Review"), () => _on_click(frm));
 	},
 });
 
 function _on_click(frm) {
 	frappe.confirm(
 		__(
-			"AI will read all attachments on this Purchase Request and suggest " +
-				"a Journal Entry split by expense type. Continue?",
+			"Send this Purchase Request to accounting? The AI Review will read the " +
+				"attachments, assign account heads and build a balanced Journal Entry. Continue?",
 		),
 		() => _start_review(frm),
 	);
