@@ -13,6 +13,25 @@
   "credentials_section",
   "api_key",
   "base_url",
+  "google_vertex_section",
+  "google_project_id",
+  "google_vertex_column_break",
+  "google_location",
+  "google_credentials_file",
+  "google_oauth_client_secret_file",
+  "document_ai_section",
+  "document_ai_enabled",
+  "document_ai_location",
+  "document_ai_column_break",
+  "document_ai_invoice_processor_id",
+  "document_ai_expense_processor_id",
+  "document_ai_confidence_threshold",
+  "document_ai_fallback_to_gemini",
+  "google_cloud_run_section",
+  "google_cloud_run_enabled",
+  "google_cloud_run_url",
+  "google_cloud_run_column_break",
+  "google_cloud_run_secret",
   "advanced_section",
   "max_tokens",
   "column_break_adv",
@@ -40,7 +59,7 @@
    "fieldname": "provider",
    "fieldtype": "Select",
    "label": "Provider",
-   "options": "OpenAI\nAnthropic",
+   "options": "OpenAI\nAnthropic\nGoogle Vertex AI",
    "reqd": 1,
    "default": "Anthropic"
   },
@@ -52,25 +71,159 @@
    "fieldname": "model",
    "fieldtype": "Data",
    "label": "Model",
-   "description": "Vision-capable model. Anthropic e.g. claude-opus-4-8 / claude-sonnet-4-6. OpenAI e.g. gpt-4o.",
+   "description": "Vision-capable model. Anthropic e.g. claude-sonnet-4-6. OpenAI e.g. gpt-4o. Google Vertex AI e.g. gemini-2.5-flash.",
    "default": "claude-sonnet-4-6"
   },
   {
    "fieldname": "credentials_section",
    "fieldtype": "Section Break",
-   "label": "API Credentials"
+   "label": "API Credentials",
+   "depends_on": "eval:doc.provider != 'Google Vertex AI'"
   },
   {
    "fieldname": "api_key",
    "fieldtype": "Password",
    "label": "API Key",
-   "reqd": 1
+   "depends_on": "eval:doc.provider != 'Google Vertex AI'",
+   "mandatory_depends_on": "eval:doc.provider != 'Google Vertex AI'"
   },
   {
    "fieldname": "base_url",
    "fieldtype": "Data",
    "label": "Base URL (optional)",
-   "description": "Override the API endpoint for a proxy or self-hosted gateway. Leave blank to use the provider default."
+   "description": "Override the API endpoint for a proxy or self-hosted gateway. Leave blank to use the provider default.",
+   "depends_on": "eval:doc.provider != 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "google_vertex_section",
+   "fieldtype": "Section Break",
+   "label": "Google Vertex AI",
+   "description": "Uses Google Cloud Application Default Credentials. Set GOOGLE_APPLICATION_CREDENTIALS on the server or provide a service account JSON file path below.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "google_project_id",
+   "fieldtype": "Data",
+   "label": "Google Cloud Project ID",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'",
+   "mandatory_depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "google_vertex_column_break",
+   "fieldtype": "Column Break",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "google_location",
+   "fieldtype": "Data",
+   "label": "Vertex AI Location",
+   "default": "us-central1",
+   "description": "Google Cloud region where the Gemini model is available, e.g. us-central1.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'",
+   "mandatory_depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "google_credentials_file",
+   "fieldtype": "Data",
+   "label": "Credentials File Path (optional)",
+   "description": "Absolute path to a service account, ADC, or external account JSON file on the server. Do not use an OAuth client secret file here.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "google_oauth_client_secret_file",
+   "fieldtype": "Data",
+   "label": "OAuth Client Secret File (ADC setup)",
+   "description": "Optional local setup helper. Use this with gcloud application-default login, then leave Credentials File Path blank for ADC.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "document_ai_section",
+   "fieldtype": "Section Break",
+   "label": "Google Document AI",
+   "description": "Optional first-pass extraction. Document AI reads invoices/receipts, then Gemini handles cleanup and accounting classification.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "default": "1",
+   "fieldname": "document_ai_enabled",
+   "fieldtype": "Check",
+   "label": "Use Document AI First",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "default": "us",
+   "fieldname": "document_ai_location",
+   "fieldtype": "Data",
+   "label": "Document AI Location",
+   "description": "Processor location, usually us or eu.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "document_ai_column_break",
+   "fieldtype": "Column Break",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "document_ai_invoice_processor_id",
+   "fieldtype": "Data",
+   "label": "Invoice Processor ID",
+   "description": "Document AI processor ID for INVOICE_PROCESSOR.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "document_ai_expense_processor_id",
+   "fieldtype": "Data",
+   "label": "Expense Processor ID",
+   "description": "Document AI processor ID for EXPENSE_PROCESSOR.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "default": "0.5",
+   "fieldname": "document_ai_confidence_threshold",
+   "fieldtype": "Float",
+   "label": "Confidence Threshold",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "default": "1",
+   "fieldname": "document_ai_fallback_to_gemini",
+   "fieldtype": "Check",
+   "label": "Fallback to Gemini Vision",
+   "description": "Use Gemini vision when Document AI has no usable amounts or a processor is not configured.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "google_cloud_run_section",
+   "fieldtype": "Section Break",
+   "label": "Google Cloud Run Processor",
+   "description": "Optional remote processor. Frappe sends the document to Cloud Run and receives final JSON back.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "default": "0",
+   "fieldname": "google_cloud_run_enabled",
+   "fieldtype": "Check",
+   "label": "Use Cloud Run Processor",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI'"
+  },
+  {
+   "fieldname": "google_cloud_run_url",
+   "fieldtype": "Data",
+   "label": "Cloud Run URL",
+   "description": "Base URL of the Smart Journal Cloud Run processor.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI' && doc.google_cloud_run_enabled"
+  },
+  {
+   "fieldname": "google_cloud_run_column_break",
+   "fieldtype": "Column Break",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI' && doc.google_cloud_run_enabled"
+  },
+  {
+   "fieldname": "google_cloud_run_secret",
+   "fieldtype": "Password",
+   "label": "Cloud Run Shared Secret",
+   "description": "Sent as X-Smart-Journal-Secret when calling Cloud Run.",
+   "depends_on": "eval:doc.provider == 'Google Vertex AI' && doc.google_cloud_run_enabled"
   },
   {
    "fieldname": "advanced_section",

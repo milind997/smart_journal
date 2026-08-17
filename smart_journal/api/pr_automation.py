@@ -34,6 +34,11 @@ from smart_journal.api.extraction import (
     _parse_json,
     _to_date,
 )
+from smart_journal.smart_journal.doctype.ai_settings.ai_settings import (
+	GOOGLE_VERTEX_PROVIDER,
+	google_vertex_generate_content,
+	openai_chat_create,
+)
 
 # ---------------------------------------------------------------------------
 # Prompts
@@ -233,7 +238,7 @@ def extract_to_pr(pr_name):
 	"""
 	settings = frappe.get_single("AI Settings")
 	if not settings.enabled:
-		frappe.throw(_("AI Settings is disabled. Enable it and set an API key first."))
+		frappe.throw(_("AI Settings is disabled. Enable it and configure provider credentials first."))
 
 	pr = frappe.get_doc("Purchase Request", pr_name)
 	rules = _load_routing_rules_v2()
@@ -298,18 +303,17 @@ def process_pr_review(review_name, pr_name):
 		settings = frappe.get_single("AI Settings")
 		if not settings.enabled:
 			_log(f"[{review_name}] ABORT — AI Settings is disabled", "error")
-			_fail(review_name, "AI Settings is disabled. Please enable it and add an API key.")
+			_fail(review_name, "AI Settings is disabled. Please enable it and configure provider credentials.")
 			return
 
-		# Fail fast with a clear message if the API key is missing — otherwise the
-		# job crashes with a raw traceback deep inside extraction (get_api_key()
-		# raises). Read the raw field so this check never throws.
-		if not settings.get_password("api_key", raise_exception=False):
+		# Fail fast with a clear message for providers that require an API key.
+		# Vertex AI uses Google Cloud credentials instead.
+		if settings.provider != GOOGLE_VERTEX_PROVIDER and not settings.get_password("api_key", raise_exception=False):
 			_log(f"[{review_name}] ABORT — AI Settings has no API Key", "error")
 			_fail(
 				review_name,
 				"AI Settings has no API Key.\n\n"
-				"Open AI Settings, paste your Anthropic API key into the 'API Key' "
+				"Open AI Settings, paste your provider API key into the 'API Key' "
 				"field, save, then create the review again.",
 			)
 			return
@@ -592,13 +596,13 @@ def _expense_type_list():
 def _extract_receipt(images, settings):
 	"""Call LLM vision on receipt images and return parsed dict."""
 	provider = settings.provider
-	api_key = settings.get_api_key()
 	model = settings.get_default_model()
 	max_tokens = int(settings.max_tokens or 800)
 	pages = images[:2]
 	prompt = _RECEIPT_PROMPT.replace("__EXPENSE_TYPES__", _expense_type_list())
 
 	if provider == "Anthropic":
+		api_key = settings.get_api_key()
 		import anthropic
 		client = anthropic.Anthropic(api_key=api_key, base_url=settings.base_url or None)
 		content = [{"type": "text", "text": prompt}]
@@ -619,8 +623,8 @@ def _extract_receipt(images, settings):
 		text = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
 
 	elif provider == "OpenAI":
+		api_key = settings.get_api_key()
 		from openai import OpenAI
-		from smart_journal.smart_journal.doctype.ai_settings.ai_settings import openai_chat_create
 		client = OpenAI(api_key=api_key, base_url=settings.base_url or None)
 		content = [{"type": "text", "text": prompt}]
 		for img in pages:
@@ -631,10 +635,137 @@ def _extract_receipt(images, settings):
 			messages=[{"role": "user", "content": content}],
 		)
 		text = resp.choices[0].message.content
+	elif provider == GOOGLE_VERTEX_PROVIDER:
+		from google.genai import types
+
+		content = [prompt]
+		for img in pages:
+			content.append(types.Part.from_bytes(data=img, mime_type=_img_media_type(img)))
+		text = google_vertex_generate_content(settings, model, content, max_tokens=max_tokens)
 	else:
 		frappe.throw(_("Unknown AI provider: {0}").format(provider))
 
 	return _parse_json(text)
+
+
+def _extract_receipt_structured(content, filename, images, settings):
+	"""Document AI first, Gemini vision fallback."""
+	if settings.provider == GOOGLE_VERTEX_PROVIDER:
+		fallback_to_gemini = getattr(settings, "document_ai_fallback_to_gemini", 1)
+		try:
+			from smart_journal.api.google_cloud_run import cloud_run_enabled, process_cloud_run
+			from smart_journal.api.google_document_ai import EXPENSE_KIND
+
+			if cloud_run_enabled(settings):
+				return process_cloud_run(
+					content,
+					filename,
+					settings,
+					EXPENSE_KIND,
+					expense_types=_expense_type_list(),
+				)
+		except Exception:
+			if not fallback_to_gemini:
+				raise
+			_error_log(
+				title=f"Smart Journal: Cloud Run receipt extraction failed — {filename}",
+				message=frappe.get_traceback(with_context=True),
+			)
+
+		try:
+			from smart_journal.api.google_document_ai import (
+				EXPENSE_KIND,
+				document_ai_enabled,
+				process_document_ai,
+			)
+
+			if document_ai_enabled(settings):
+				doc_ai = process_document_ai(content, filename, settings, EXPENSE_KIND)
+				enriched = _enrich_receipt_from_document_ai(doc_ai, settings)
+				merged = _merge_receipt_data(doc_ai, enriched)
+				if (
+					_has_receipt_signal(merged)
+					and _passes_document_ai_confidence(merged, settings)
+				) or not fallback_to_gemini:
+					return merged
+		except Exception:
+			if not fallback_to_gemini:
+				raise
+			_error_log(
+				title=f"Smart Journal: Document AI receipt extraction failed — {filename}",
+				message=frappe.get_traceback(with_context=True),
+			)
+	return _extract_receipt(images, settings)
+
+
+def _enrich_receipt_from_document_ai(doc_ai, settings):
+	"""Ask Gemini to classify/split Document AI output into Smart Journal expense lines."""
+	source = dict(doc_ai or {})
+	source_text = source.pop("document_ai_text", "")
+	prompt = _RECEIPT_PROMPT.replace("__EXPENSE_TYPES__", _expense_type_list())
+	prompt += f"""
+
+Use this Document AI extraction and OCR text as the source. Classify each line
+into one of the allowed expense_type values, split separate bills when needed,
+and return ONLY the JSON object in the requested schema.
+
+Document AI JSON:
+{json.dumps(source, ensure_ascii=False)}
+
+OCR text:
+{source_text[:3000]}
+"""
+	text = google_vertex_generate_content(
+		settings,
+		settings.get_default_model(),
+		prompt,
+		max_tokens=int(settings.max_tokens or 800),
+	)
+	return _parse_json(text)
+
+
+def _merge_receipt_data(doc_ai, enriched):
+	out = dict(enriched or {})
+	doc_ai = doc_ai or {}
+	for key in [
+		"document_type", "legible", "vendor", "vendor_vat", "invoice_number",
+		"invoice_date", "reference_number", "bank_charge", "bank_charge_vat",
+	]:
+		if not _value_present(out.get(key)) and _value_present(doc_ai.get(key)):
+			out[key] = doc_ai.get(key)
+	if not out.get("line_items") and doc_ai.get("line_items"):
+		out["line_items"] = doc_ai.get("line_items")
+	if "document_ai_confidence" in doc_ai:
+		out["document_ai_confidence"] = doc_ai["document_ai_confidence"]
+	return out
+
+
+def _has_receipt_signal(data):
+	if not data:
+		return False
+	if data.get("line_items"):
+		for item in data.get("line_items"):
+			if flt(item.get("amount_before_vat")) or flt(item.get("vat_amount")) or flt(item.get("total_amount")):
+				return True
+	return bool(flt(data.get("bank_charge")) or flt(data.get("bank_charge_vat")))
+
+
+def _value_present(value):
+	if isinstance(value, list):
+		return bool(value)
+	if isinstance(value, (int, float)):
+		return bool(flt(value))
+	return bool(value)
+
+
+def _passes_document_ai_confidence(data, settings):
+	threshold = flt(getattr(settings, "document_ai_confidence_threshold", 0))
+	if not threshold:
+		return True
+	confidence = data.get("document_ai_confidence")
+	if confidence in (None, ""):
+		return True
+	return flt(confidence) >= threshold
 
 
 def _extract_from_text(pr, settings):
@@ -654,11 +785,11 @@ def _extract_from_text(pr, settings):
 	).replace("__EXPENSE_TYPES__", _expense_type_list())
 
 	provider = settings.provider
-	api_key = settings.get_api_key()
 	model = settings.get_default_model()
 
 	try:
 		if provider == "Anthropic":
+			api_key = settings.get_api_key()
 			import anthropic
 			client = anthropic.Anthropic(api_key=api_key, base_url=settings.base_url or None)
 			msg = client.messages.create(
@@ -667,14 +798,16 @@ def _extract_from_text(pr, settings):
 			)
 			text_resp = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
 		elif provider == "OpenAI":
+			api_key = settings.get_api_key()
 			from openai import OpenAI
-			from smart_journal.smart_journal.doctype.ai_settings.ai_settings import openai_chat_create
 			client = OpenAI(api_key=api_key, base_url=settings.base_url or None)
 			resp = openai_chat_create(
 				client, model=model, max_tokens=800,
 				messages=[{"role": "user", "content": prompt}],
 			)
 			text_resp = resp.choices[0].message.content
+		elif provider == GOOGLE_VERTEX_PROVIDER:
+			text_resp = google_vertex_generate_content(settings, model, prompt, max_tokens=800)
 		else:
 			return []
 
@@ -762,7 +895,7 @@ def _collect_attachment_lines(pr, settings, rules):
 				unclear_files.append((file_name, "could not be opened/converted"))
 				continue
 
-			data = _extract_receipt(images, settings)
+			data = _extract_receipt_structured(content, file_name, images, settings)
 			# An explicit row hint overrides the AI's guess at document type.
 			doc_type = src["doc_type_hint"] or data.get("document_type", "Receipt")
 

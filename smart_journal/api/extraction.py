@@ -16,6 +16,7 @@ import base64
 import io
 import json
 import re
+from copy import deepcopy
 
 import frappe
 from frappe import _
@@ -39,7 +40,7 @@ def extract_invoice(docname):
 
 	settings = frappe.get_single("AI Settings")
 	if not settings.enabled:
-		frappe.throw(_("AI Settings is disabled. Enable it and set an API key first."))
+		frappe.throw(_("AI Settings is disabled. Enable it and configure provider credentials first."))
 
 	content, filename = _read_file(doc.invoice_file)
 	images = _file_to_images(content, filename)
@@ -50,7 +51,7 @@ def extract_invoice(docname):
 	raw_qr, qr = _decode_qr(images)
 
 	# 2) LLM vision pass (full structured extraction)
-	llm = _call_llm(images, settings)
+	llm = _extract_invoice_structured(content, filename, images, settings)
 
 	# 3) Merge — QR wins where it has a value
 	supplier_name = qr.get("seller_name") or llm.get("supplier_name")
@@ -119,7 +120,7 @@ def extract_from_file(file_url, company=None):
 
 	settings = frappe.get_single("AI Settings")
 	if not settings.enabled:
-		frappe.throw(_("AI Settings is disabled. Enable it and set an API key first."))
+		frappe.throw(_("AI Settings is disabled. Enable it and configure provider credentials first."))
 
 	content, filename = _read_file(file_url)
 	images = _file_to_images(content, filename)
@@ -127,7 +128,7 @@ def extract_from_file(file_url, company=None):
 		frappe.throw(_("Could not read any page/image from the attached file."))
 
 	raw_qr, qr = _decode_qr(images)
-	llm = _call_llm(images, settings)
+	llm = _extract_invoice_structured(content, filename, images, settings)
 
 	supplier_name = qr.get("seller_name") or llm.get("supplier_name")
 	supplier_vat = _digits(qr.get("seller_vat")) or _digits(llm.get("supplier_vat"))
@@ -326,12 +327,12 @@ Rules:
 
 def _call_llm(images, settings):
 	provider = settings.provider
-	api_key = settings.get_api_key()
 	model = settings.get_default_model()
 	max_tokens = settings.max_tokens or 2000
 	pages = images[:2]  # first two pages are enough for an invoice
 
 	if provider == "Anthropic":
+		api_key = settings.get_api_key()
 		import anthropic
 		client = anthropic.Anthropic(api_key=api_key, base_url=settings.base_url or None)
 		content = [{"type": "text", "text": _PROMPT}]
@@ -348,6 +349,7 @@ def _call_llm(images, settings):
 		text = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
 
 	elif provider == "OpenAI":
+		api_key = settings.get_api_key()
 		from openai import OpenAI
 
 		from smart_journal.smart_journal.doctype.ai_settings.ai_settings import openai_chat_create
@@ -362,10 +364,129 @@ def _call_llm(images, settings):
 			messages=[{"role": "user", "content": content}],
 		)
 		text = resp.choices[0].message.content
+	elif provider == "Google Vertex AI":
+		from google.genai import types
+
+		from smart_journal.smart_journal.doctype.ai_settings.ai_settings import google_vertex_generate_content
+
+		content = [_PROMPT]
+		for img in pages:
+			content.append(types.Part.from_bytes(data=img, mime_type=_img_media_type(img)))
+		text = google_vertex_generate_content(settings, model, content, max_tokens=max_tokens)
 	else:
 		frappe.throw(_("Unknown AI provider: {0}").format(provider))
 
 	return _parse_json(text)
+
+
+def _extract_invoice_structured(content, filename, images, settings):
+	"""Document AI first, Gemini vision fallback."""
+	if settings.provider == "Google Vertex AI":
+		fallback_to_gemini = getattr(settings, "document_ai_fallback_to_gemini", 1)
+		try:
+			from smart_journal.api.google_cloud_run import cloud_run_enabled, process_cloud_run
+			from smart_journal.api.google_document_ai import INVOICE_KIND
+
+			if cloud_run_enabled(settings):
+				return process_cloud_run(content, filename, settings, INVOICE_KIND)
+		except Exception:
+			if not fallback_to_gemini:
+				raise
+			frappe.log_error(frappe.get_traceback(), "smart_journal: Cloud Run invoice extraction failed")
+
+		try:
+			from smart_journal.api.google_document_ai import (
+				INVOICE_KIND,
+				document_ai_enabled,
+				process_document_ai,
+			)
+
+			if document_ai_enabled(settings):
+				doc_ai = process_document_ai(content, filename, settings, INVOICE_KIND)
+				enriched = _enrich_invoice_from_document_ai(doc_ai, settings)
+				merged = _merge_invoice_data(doc_ai, enriched)
+				if (
+					_has_invoice_signal(merged)
+					and _passes_document_ai_confidence(merged, settings)
+				) or not fallback_to_gemini:
+					return merged
+		except Exception:
+			if not fallback_to_gemini:
+				raise
+			frappe.log_error(frappe.get_traceback(), "smart_journal: Document AI invoice extraction failed")
+	return _call_llm(images, settings)
+
+
+def _enrich_invoice_from_document_ai(doc_ai, settings):
+	"""Ask Gemini to clean Document AI output into the existing invoice schema."""
+	if settings.provider != "Google Vertex AI":
+		return {}
+	from smart_journal.smart_journal.doctype.ai_settings.ai_settings import google_vertex_generate_content
+
+	source = deepcopy(doc_ai or {})
+	source_text = source.pop("document_ai_text", "")
+	prompt = f"""{_PROMPT}
+
+Use this Document AI extraction and OCR text as the source. Correct obvious OCR
+formatting issues, keep amounts consistent, and return ONLY the JSON object.
+
+Document AI JSON:
+{json.dumps(source, ensure_ascii=False)}
+
+OCR text:
+{source_text[:3000]}
+"""
+	return _parse_json(google_vertex_generate_content(
+		settings,
+		settings.get_default_model(),
+		prompt,
+		max_tokens=settings.max_tokens or 2000,
+	))
+
+
+def _merge_invoice_data(doc_ai, enriched):
+	out = dict(enriched or {})
+	doc_ai = doc_ai or {}
+	for key in [
+		"supplier_name", "supplier_vat", "customer_vat", "invoice_no", "invoice_date",
+		"net_amount", "vat_amount", "total_amount", "line_items",
+	]:
+		if not _value_present(out.get(key)) and _value_present(doc_ai.get(key)):
+			out[key] = doc_ai.get(key)
+	for key in ["document_ai_confidence"]:
+		if key in doc_ai:
+			out[key] = doc_ai[key]
+	return out
+
+
+def _has_invoice_signal(data):
+	if not data:
+		return False
+	return bool(
+		flt(data.get("total_amount"))
+		or flt(data.get("net_amount"))
+		or flt(data.get("vat_amount"))
+		or data.get("invoice_no")
+		or data.get("line_items")
+	)
+
+
+def _value_present(value):
+	if isinstance(value, list):
+		return bool(value)
+	if isinstance(value, (int, float)):
+		return bool(flt(value))
+	return bool(value)
+
+
+def _passes_document_ai_confidence(data, settings):
+	threshold = flt(getattr(settings, "document_ai_confidence_threshold", 0))
+	if not threshold:
+		return True
+	confidence = data.get("document_ai_confidence")
+	if confidence in (None, ""):
+		return True
+	return flt(confidence) >= threshold
 
 
 def _parse_json(text):

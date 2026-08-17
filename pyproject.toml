@@ -10,6 +10,8 @@ dynamic = ["version"]
 dependencies = [
     # "frappe~=15.0.0" # Installed and managed by bench.
     "anthropic>=0.106.0",
+    "google-cloud-documentai>=2.30.0",
+    "google-genai>=1.0.0",
     "PyMuPDF>=1.24.0",  # 'fitz' — renders PDF attachments to images for AI vision
 ]
 
